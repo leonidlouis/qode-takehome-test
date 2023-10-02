@@ -192,6 +192,7 @@ const Home = () => {
             onChange={onFileChange}
             ref={fileInputRef}
             display="none"
+            accept=".jpg, .jpeg, .png, .gif, .webp, .heic"
             id="file-upload"
           />
         </Box>
