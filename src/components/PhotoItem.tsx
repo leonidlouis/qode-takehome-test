@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Image,
@@ -17,26 +17,65 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 import { Photo } from "@/types/photoTypes";
+import { useUserId } from "@/hooks/useUserId";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
+import { firestoreDb } from "@/lib/firebaseClientConfig";
 
 interface PhotoItemProps {
   photo: Photo;
-  onAddComment: (comment: string) => void;
+  onAddComment: (comment: any) => void;
 }
 
 const PhotoItem: React.FC<PhotoItemProps> = ({ photo, onAddComment }) => {
+  const userId = useUserId();
   const [tempComment, setTempComment] = useState<string>("");
 
-  const handleAddComment = () => {
-    onAddComment(tempComment);
+  const handleAddComment = async () => {
+    if (!tempComment || !userId || !photo.id) return;
+
+    const commentsRef = collection(
+      firestoreDb,
+      `users/${userId}/photos/${photo.id}/comments`
+    );
+
+    const newComment = {
+      text: tempComment,
+      timestamp: serverTimestamp(),
+    };
+
+    try {
+      const newCommentRef = await addDoc(commentsRef, newComment);
+      const newCommentSnap = await getDoc(newCommentRef);
+      const createdComment = newCommentSnap.data();
+
+      onAddComment({ id: newCommentRef.id, ...createdComment });
+    } catch (error) {
+      console.error("Error adding comment: ", error);
+    }
+
     setTempComment("");
   };
+
+  const photoTimestamp = useMemo(() => {
+    // Convert Firestore Timestamp to milliseconds
+    const dateInMillis =
+      photo.timestamp.seconds * 1000 + photo.timestamp.seconds / 1000000;
+    const formattedDate = dayjs(dateInMillis).format("MMMM D, YYYY h:mm A");
+
+    return formattedDate;
+  }, [photo]);
 
   return (
     <ListItem mb={6}>
       <Box boxShadow="base" borderRadius="md" overflow="hidden">
         <Image src={photo.src} />
         <Text fontSize="xs" pl={4} pt={4}>
-          {dayjs(photo.timestamp).format("MMMM D, YYYY h:mm A")}
+          {dayjs(photoTimestamp).format("MMMM D, YYYY h:mm A")}
         </Text>
         <FormControl p={4}>
           <Textarea
@@ -66,7 +105,7 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ photo, onAddComment }) => {
                       {comment.text}
                     </Box>
                     <Text color="gray.500" marginLeft="auto">
-                      ({dayjs(comment.timestamp).fromNow()})
+                      ({dayjs(comment.timestamp.toDate()).fromNow()})
                     </Text>
                   </Box>
                 </ListItem>
