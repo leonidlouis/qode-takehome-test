@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Photo + Commenting App
+
+This is a simple Next.js project that allows users to upload photos and add comments to them. This project utilizes Chakra UI for the UI components and dayjs for handling and formatting timestamps.
+
+## Features
+
+- Users can upload a photo.
+- Users can see the list of uploaded photos.
+- Users can add a comment to a photo.
+- Each photo and comment has a timestamp.
+- The photos and comments are displayed in descending order of their timestamps.
+
+## Technologies
+
+- Next.js
+- Chakra UI
+- dayjs
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Ensure you have the following installed on your local machine:
+
+- [Node.js](https://nodejs.org/en/download/)
+- [npm](https://www.npmjs.com/get-npm) or [Yarn](https://yarnpkg.com/getting-started/install)
+
+### Installation
+
+1. Clone this repository:
+
+```sh
+git clone https://github.com/leonidlouis/qode-takehome-test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+cd <project-dir>
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Install the dependencies:
 
-## Learn More
+```sh
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+or if you are using Yarn:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+yarn
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. Run the development server:
 
-## Deploy on Vercel
+```sh
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+or with Yarn:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```sh
+yarn dev
+```
+
+5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see the application running.
+
+## Usage
+
+1. **Upload a Photo:**
+
+   - Click the 'Choose File' button to select a photo.
+   - Once a photo is selected, click 'Upload' to add the photo to the list.
+
+2. **Add a Comment:**
+
+   - Under each photo, there is a textarea to write a comment.
+   - Write the comment in the textarea and click 'Add Comment'.
+
+3. **View Comments:**
+   - Comments for each photo can be viewed below the photo.
+   - Comments are listed with their relative timestamp in descending order.
